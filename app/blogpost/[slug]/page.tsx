@@ -11,6 +11,8 @@ import matter from "gray-matter"
 import fs from "fs"
 import OnThisPage from '@/components/OnThisPage'
 import rehypeAutolinkHeadings from 'rehype-autolink-headings'
+import rehypePrettyCode from "rehype-pretty-code";
+import { transformerCopyButton } from '@rehype-pretty/transformers'
 
 export default async function BlogPage({ params }: { params: { slug: string } }) {
   const processor = unified()
@@ -18,6 +20,15 @@ export default async function BlogPage({ params }: { params: { slug: string } })
   .use(remarkRehype) 
   .use(rehypeStringify)
   .use(rehypeSlug)
+  .use(rehypePrettyCode, {
+    theme: "material-theme-darker",
+    transformers: [
+      transformerCopyButton({
+        visibility: 'always',
+        feedbackDuration: 3_000,
+      }),
+    ],
+  })
   .use(rehypeAutolinkHeadings)
 
 
